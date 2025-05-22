@@ -1,4 +1,4 @@
-# Stunting Toddler Analysis Dashboard
+# Toddler Nutrition Analysis Dashboard
 
 This dashboard is a Streamlit-based web application for analyzing and visualizing toddler stunting data, focusing on height and nutrition status compared to WHO standards.
 
@@ -15,7 +15,7 @@ This dashboard is a Streamlit-based web application for analyzing and visualizin
 
 ```bash
 git clone https://github.com/yourusername/stunting-toddler-analysis.git
-cd stunting-toddler-analysis
+cd toddler-nutrition-analysis
 ```
 
 ### 2. (Optional) Create a Virtual Environment
@@ -45,7 +45,7 @@ pip install streamlit pandas plotly
 ### 4. Run the Application
 
 ```bash
-streamlit run stunting_toddler_analysis.py
+streamlit run toddler_nutrition_analysis.py
 ```
 
 Open the provided URL (usually http://localhost:8501) in your browser.
