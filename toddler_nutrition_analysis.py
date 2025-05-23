@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+import os
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -5,7 +7,7 @@ import plotly.express as px
 st.set_page_config(page_title="Analisis Status Gizi Balita", layout="wide")
 @st.cache_data
 def load_data():
-    df = pd.read_csv("data/stunting_toddler.csv")
+    df = pd.read_csv(os.getenv("DATA_SOURCE", "data/toddler_nutrition.csv"))
     df['Status Gizi'] = df['Status Gizi'].replace('tinggi', 'above-average')
     return df
 
