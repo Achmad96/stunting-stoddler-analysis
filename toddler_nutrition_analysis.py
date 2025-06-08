@@ -10,6 +10,7 @@ load_dotenv()
 def load_data():
     df = pd.read_csv(os.getenv("DATA_SOURCE", "data/toddler_nutrition.csv"))
     df['Status Gizi'] = df['Status Gizi'].replace('tinggi', 'above-average')
+    df['Tinggi Badan (cm)'] = df['Tinggi Badan (cm)'].astype(float).round(2)
     return df
 
 def height_classification(row):
@@ -35,17 +36,17 @@ def height_classification(row):
         if age_range[0] <= age_months <= age_range[1]:
             min_height, max_height = height_range
             if height < min_height:
-                return "Di bawah Standar"
+                return "stunted"
             elif height > max_height:
-                return "Di atas Standar"
+                return "above-average"
             else:
-                return "Sesuai Standar"
+                return "normal"
     return "Usia di luar rentang analisis"
 
 df = load_data()
 dataset_url = "https://www.kaggle.com/datasets/rendiputra/stunting-balita-detection-121k-rows"
 
-st.title("Analisis Status Gizi Berdasarkan Data Tinggi Badan dan Umur Balita")
+st.title("Analisis Status Gizi pada Anak Usia Balita")
 
 # SIDEBAR
 st.sidebar.header("Filter Data")
@@ -104,7 +105,7 @@ nutrition_bar.update_traces(textposition='inside')
 st.plotly_chart(nutrition_bar, use_container_width=True)
 st.markdown("---")
 
-st.subheader("Analisis Berdasarkan Standar WHO")
+st.subheader("Distribusi Status Gizi Berdasarkan Standar WHO")
 st.write("""
 Data tinggi badan dibandingkan dengan standar WHO untuk rentang tinggi badan ideal
 berdasarkan usia dan jenis kelamin.
@@ -132,7 +133,7 @@ who_bar = px.bar(
     x='WHO Status', 
     y='Jumlah',
     color='WHO Status',
-    title="Perbandingan Status Tinggi Badan dengan Standar WHO",
+    title="Distribusi Status Gizi Berdasarkan Standar WHO",
     labels={'WHO Status': 'Status WHO', 'Jumlah': 'Jumlah Balita'},
     text='Jumlah'
 )
@@ -164,7 +165,8 @@ height_scatter = px.scatter(
     y='Tinggi Badan (cm)', 
     color='Status Gizi',
     hover_data=['Jenis Kelamin'],
-    title="Tinggi Badan Berdasarkan Umur dan Status Gizi"
+    title="Tinggi Badan Berdasarkan Umur dan Status Gizi",
+    # barmode='stack'
 )
 st.plotly_chart(height_scatter, use_container_width=True)
 st.markdown("---")
