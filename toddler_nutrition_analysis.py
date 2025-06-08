@@ -5,6 +5,7 @@ import pandas as pd
 import plotly.express as px
 
 st.set_page_config(page_title="Analisis Status Gizi Balita", layout="wide")
+load_dotenv()
 @st.cache_data
 def load_data():
     df = pd.read_csv(os.getenv("DATA_SOURCE", "data/toddler_nutrition.csv"))
