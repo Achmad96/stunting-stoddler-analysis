@@ -10,7 +10,7 @@ load_dotenv()
 def load_data():
     df = pd.read_csv(os.getenv("DATA_SOURCE", "data/toddler_nutrition.csv"))
     df['Status Gizi'] = df['Status Gizi'].replace('tinggi', 'above-average')
-    df['Tinggi Badan (cm)'] = df['Tinggi Badan (cm)'].astype(float).round(2)
+    df['Tinggi Badan (cm)'] = df['Tinggi Badan (cm)'].astype(float).round(0)
     return df
 
 def height_classification(row):
@@ -186,3 +186,16 @@ st.plotly_chart(age_line, use_container_width=True)
 st.markdown("---")
 
 st.caption(f"Sumber data: <a href='{dataset_url}'>Stunting Toddler (Balita) Detection (121K rows)</a>", unsafe_allow_html=True)
+
+st.subheader("Distribusi Status Gizi")
+treemap_data = df.groupby(['Status Gizi', 'Jenis Kelamin']).size().reset_index(name='Jumlah')
+treemap_data['Jumlah'] = round(treemap_data['Jumlah'] / treemap_data['Jumlah'].sum() * 100)
+treemap_fig = px.treemap(
+    treemap_data,
+    path=['Status Gizi','Jenis Kelamin'],
+    values='Jumlah',
+    title="Distribusi Status Gizi",
+    color='Status Gizi',
+    labels={'Jumlah': 'Persentase (%)', 'Status Gizi': 'Status Gizi'}
+)
+st.plotly_chart(treemap_fig, use_container_width=True)
